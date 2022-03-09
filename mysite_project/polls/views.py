@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Question
 
@@ -10,13 +10,7 @@ def index(request):
     return render(request, 'polls/index.html', context)
 
 def question_detail(request, question_id):
-    try:
-        question = Question.objects.get(pk=question_id)
-    except Question.DoesNotExist as exc:
-        # Re: `raise ... from` see,
-        # https://stackoverflow.com/questions/24752395/python-raise-from-usage
-        # https://www.python.org/dev/peps/pep-3134/
-        raise Http404('Question does not exist.') from exc
+    question = get_object_or_404(Question, pk=question_id)
     context = {'question': question}
     return render(request, 'polls/detail.html', context)
 
