@@ -7,3 +7,6 @@ __pycache__/
 *$py.class
 
 .vscode
+
+# Report from coverage.py
+.coverage
