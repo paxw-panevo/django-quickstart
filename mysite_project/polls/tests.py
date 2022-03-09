@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from .models import Question
 
-class QuestionModelTests(TestCase):
+class Question_Was_Published_Recently_Tests(TestCase):
     def test_future_question_should_not_be_flagged_as_published_recently(self):
         """
         `was_published_recently()` should return `False` for questions whose
