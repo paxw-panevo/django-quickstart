@@ -57,7 +57,8 @@ class Question_Was_Published_Recently_Tests(TestCase):
 
 class Question_Index_View_Tests(TestCase):
 
-    def test_no_questions(self):
+
+    def test_no_questions_should_display_appropriate_message(self):
         """If no questions exist, an appropriate message should be displayed."""
         response = self.client.get(reverse('polls:index'))
         self.assertEqual(response.status_code, 200)
