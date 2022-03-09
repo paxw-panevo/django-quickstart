@@ -114,3 +114,9 @@ class Question_Detail_View_Tests(TestCase):
         url = reverse('polls:detail', args=(future_question.id,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
+
+    def test_past_question_details_should_display(self):
+        past_question = _create_question("Who? Who? Who?", pub_date_offset=-1)
+        url = reverse('polls:detail', args=(past_question.id,))
+        response = self.client.get(url)
+        self.assertContains(response, past_question.question_text)
