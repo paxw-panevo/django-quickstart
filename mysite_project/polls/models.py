@@ -8,11 +8,12 @@ class Question(models.Model):
     pub_date = models.DateTimeField('date published')
 
     def __str__(self):
-        return f"({self.pk}) {self.question_text}" 
-    
+        return f"({self.pk}) {self.question_text}"
+
     def was_published_recently(self) -> bool:
-        the_day_before = timezone.now() - timedelta(days=1)
-        return self.pub_date >= the_day_before
+        DATETIME_NOW = timezone.now()
+        the_day_before = DATETIME_NOW - timedelta(days=1)
+        return DATETIME_NOW >= self.pub_date >= the_day_before
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -20,4 +21,4 @@ class Choice(models.Model):
     votes = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"({self.pk}) {self.choice_text}: {self.votes}" 
+        return f"({self.pk}) {self.choice_text}: {self.votes}"
