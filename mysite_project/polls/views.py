@@ -14,8 +14,7 @@ def index(request):
 
 def question_detail(request, question_id):
     question = get_object_or_404(
-        Question, pk=question_id,
-        pub_date__lte=timezone.now()
+        Question, pk=question_id, pub_date__lte=timezone.now()
     )
     context = {'question': question}
     return render(request, 'polls/detail.html', context)
