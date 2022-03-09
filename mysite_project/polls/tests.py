@@ -41,3 +41,14 @@ class Question_Was_Published_Recently_Tests(TestCase):
         self.assertIs(actual_flag, expected_flag)
 
 
+    def test_older_question_should_not_be_flagged_as_published_recently(self):
+        """
+        `was_published_recently()` should return `False` for questions whose
+        `pub_date` is older than 1 day.
+        """
+        given_older_pub_date = timezone.now() - timedelta(days=1, seconds=1)
+        given_older_question = Question(pub_date=given_older_pub_date)
+
+        actual_flag = given_older_question.was_published_recently()
+        expected_flag = False
+        self.assertIs(actual_flag, expected_flag)
