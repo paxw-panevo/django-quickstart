@@ -2,6 +2,7 @@ from datetime import timedelta
 from unittest import skip
 
 from django.test import TestCase
+from django.urls import reverse
 from django.utils import timezone
 
 from .models import Question
@@ -52,3 +53,13 @@ class Question_Was_Published_Recently_Tests(TestCase):
         actual_flag = given_older_question.was_published_recently()
         expected_flag = False
         self.assertIs(actual_flag, expected_flag)
+
+
+class Question_Index_View_Tests(TestCase):
+
+    def test_no_questions(self):
+        """If no questions exist, an appropriate message should be displayed."""
+        response = self.client.get(reverse('polls:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No polls are available.")
+        self.assertQuerysetEqual(response.context['latest_questions'], [])
