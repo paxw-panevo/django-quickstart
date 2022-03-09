@@ -106,3 +106,11 @@ class Question_Index_View_Tests(TestCase):
             response.context['latest_questions'],
             [question1, question2],
         )
+
+class Question_Detail_View_Tests(TestCase):
+
+    def test_future_question_should_return_404(self):
+        future_question = _create_question('Who are you?', pub_date_offset=5)
+        url = reverse('polls:detail', args=(future_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
