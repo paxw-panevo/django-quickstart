@@ -20,6 +20,11 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInline]
     list_display = ['question_text', 'pub_date', 'was_published_recently']
     list_filter = ['pub_date']
+
+    # This uses a LIKE query behind the scenes, limiting the number of search
+    # fields to a reasonable number will make it easier for your database to
+    # do the search.
+    # https://docs.djangoproject.com/en/3.2/intro/tutorial07/
     search_fields = ['question_text']
 
 
