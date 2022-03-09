@@ -86,3 +86,14 @@ class Question_Index_View_Tests(TestCase):
             [question],
         )
 
+    def test_future_question_should_not_be_listed_in_index(self):
+        """
+        Questions with a `pub_date` in the past are displayed on the
+        index page.
+        """
+        question = _create_question("What's up?", pub_date_offset=30)
+        response = self.client.get(reverse('polls:index'))
+        self.assertQuerysetEqual(
+            response.context['latest_questions'],
+            [],
+        )

@@ -1,11 +1,14 @@
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
 
 from .models import Question
 
 
 def index(request):
-    latest_questions = Question.objects.order_by('-pub_date')[:5]
+    latest_questions = Question.objects.filter(
+        pub_date__lte=timezone.now()
+    ).order_by('-pub_date')[:5]
     context = {'latest_questions': latest_questions}
     return render(request, 'polls/index.html', context)
 
