@@ -97,3 +97,12 @@ class Question_Index_View_Tests(TestCase):
             response.context['latest_questions'],
             [],
         )
+
+    def test_most_recent_questions_should_be_listed_first(self):
+        question1 = _create_question("What's up?", pub_date_offset=-1)
+        question2 = _create_question("What's up?", pub_date_offset=-2)
+        response = self.client.get(reverse('polls:index'))
+        self.assertQuerysetEqual(
+            response.context['latest_questions'],
+            [question1, question2],
+        )
