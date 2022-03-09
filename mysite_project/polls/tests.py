@@ -54,6 +54,15 @@ class Question_Was_Published_Recently_Tests(TestCase):
         expected_flag = False
         self.assertIs(actual_flag, expected_flag)
 
+# TODO Try moving this helper function inside the test class?
+def _create_question(question_text, *, pub_date_offset):
+    """
+    Create a question with the given `question_text` and published the
+    given number of `days` offset to now (negative for questions published
+    in the past, positive for questions that have yet to be published).
+    """
+    time = timezone.now() + timedelta(days=pub_date_offset)
+    return Question.objects.create(question_text=question_text, pub_date=time)
 
 class Question_Index_View_Tests(TestCase):
 
@@ -64,3 +73,16 @@ class Question_Index_View_Tests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No polls are available.")
         self.assertQuerysetEqual(response.context['latest_questions'], [])
+
+    def test_past_question_should_be_listed_in_index(self):
+        """
+        Questions with a `pub_date` in the past are displayed on the
+        index page.
+        """
+        question = _create_question("What's up?", pub_date_offset=-30)
+        response = self.client.get(reverse('polls:index'))
+        self.assertQuerysetEqual(
+            response.context['latest_questions'],
+            [question],
+        )
+
